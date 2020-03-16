@@ -12,8 +12,9 @@ connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
     afterConnection();
-    connection.end();
+    
 inquirerquestions();
+
 });
 
 function afterConnection(){
@@ -54,10 +55,20 @@ function afterConnection(){
         let arrayfinder = answers.idnumber - 1;
         let chosenitem = allproducts[arrayfinder];
         let totalcost = (answers.howmany * chosenitem.price).toFixed(2);
+        let newquantity = chosenitem.stock_quantity - answers.howmany;
+        console.log(newquantity);
+        let updatestring = 'UPDATE products SET stock_quantity='+newquantity+ ' WHERE item_id=' + answers.idnumber;
         if (chosenitem.stock_quantity >= answers.howmany){
             console.log("You've purchased " + answers.howmany + " " + chosenitem.product_name);
             console.log("It cost you: $" + totalcost);
-
+            
+            connection.query(updatestring, function (error, results, fields) {
+                if (error) throw error;
+                
+        });
+    }
+        else{
+            console.log("Sorry not enough available!");
         }
     
     })
