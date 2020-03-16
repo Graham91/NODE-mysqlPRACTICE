@@ -12,10 +12,25 @@ connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
     afterConnection();
+   connection.end();
 });
 
 function afterConnection(){
     console.log("hi");
+    connection.query('SELECT * FROM bamazon.products;', function (error, results, fields) {
+        if (error) throw error;
+        const allproducts = results;
+        for(let i = 0; i < allproducts.length; i++){
+            let currentproduct = allproducts[i];
+            console.log("ID: " + currentproduct.item_id);
+            console.log("Product: "+currentproduct.product_name);
+            console.log("Product Department: " + currentproduct.department_name);
+            console.log("Price: $" + currentproduct.price);
+            console.log("Items in stock: "+currentproduct.stock_quantity);
+            console.log("----------------------------");
+
+        }
+      });
 }
 inquirer
   .prompt([
