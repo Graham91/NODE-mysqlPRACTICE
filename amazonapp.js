@@ -66,9 +66,11 @@ function afterConnection(){
                 if (error) throw error;
                 
         });
+        inquirerquestions();
     }
         else{
             console.log("Sorry not enough available!");
+            inquirerquestions();
         }
     
     })
